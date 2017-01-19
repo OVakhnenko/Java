@@ -1,3 +1,5 @@
+package Done;
+
 public class MRHashCode {
     public static void main(String[] args) {
         String st1 = "123456788";

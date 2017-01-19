@@ -1,3 +1,5 @@
+package Done;
+
 import java.io.*;
 import java.util.*;
 
@@ -7,7 +9,7 @@ public class MRArray {
     private File txt;
     private String fileName;
 
-    void sortLoToHi() {
+    private void sortLoToHi() {
         for (int i = arr.length - 1; i > 0; i--) {
             for (int j = 0; j < i; j++) {
                 if (arr[j] > arr[j + 1]) {
@@ -19,8 +21,8 @@ public class MRArray {
         }
     }
 
-    void createFile() {
-        fileName = new File("").getAbsolutePath() + "\\MRArray.txt";
+    private void createFile() {
+        fileName = new File("").getAbsolutePath() + "\\Done.MRArray.txt";
         txt = new File(fileName);
         try {
             txt.createNewFile();
@@ -29,7 +31,7 @@ public class MRArray {
         }
     }
 
-    void writeArrToFile(int[] tmpArr) {
+    private void writeArrToFile(int[] tmpArr) {
         try (FileWriter fw = new FileWriter(fileName)) {
             for (int i = 0; i < tmpArr.length; i++) {
                 fw.write(tmpArr[i] + '0');
@@ -42,7 +44,7 @@ public class MRArray {
 
     }
 
-    void readArrFromFile() {
+    private void readArrFromFile() {
         try {
             Scanner sc = new Scanner(txt);
             sc.useDelimiter("");
@@ -52,8 +54,9 @@ public class MRArray {
         }
     }
 
-    void print() {
-        for (int i = 0; i < arr.length; i++) System.out.print(arr[i] + " ");
+    private void print() {
+        for (int i = 0; i < arr.length; i++)
+            System.out.print(arr[i] + " ");
         System.out.println();
     }
 
