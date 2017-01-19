@@ -6,16 +6,14 @@
 // encountered, it will simply retrieve the stored result.
 // Use collections and maps where appropriate.
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Random;
+import java.util.*;
 
 public class MRString {
     private static final int COLLECTION_LEN = 500;
     private static final int STRING_LEN = 1000;
 
-    private ArrayList<String> strings = new ArrayList<>();
-    private HashMap<Integer, Integer> cache = new HashMap<>();
+    private List<String> strings = new ArrayList<>();
+    private Map<Integer, Integer> cache = new HashMap<>();
     private Random rnd = new Random();
 
     private String createString() {
@@ -39,10 +37,12 @@ public class MRString {
 
     private int getUniqueChars(String str) {
         int[] chars = new int[256];
+        int idx;
         int unique = 0;
 
         for (int i = 0; i < str.length(); i++) {
-            chars[str.charAt(i)]++;
+            idx = str.charAt(i);
+            chars[idx]++;
         }
         for (int c : chars) if (c == 1) unique++;
 
@@ -61,7 +61,8 @@ public class MRString {
     private int getStringFromCache(String str) {
         Integer idx;
 
-        return ((idx = cache.get(str.hashCode())) == null) ? -1 : idx;
+        idx = cache.get(str.hashCode());
+        return (idx == null) ? -1 : idx;
     }
 
     private void addStringToCache(String str, int uniqueChars) {
