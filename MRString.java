@@ -44,7 +44,9 @@ public class MRString {
             idx = str.charAt(i);
             chars[idx]++;
         }
-        for (int c : chars) if (c == 1) unique++;
+        for (int c : chars) {
+            if (c == 1) unique++;
+        }
 
         return unique;
     }
