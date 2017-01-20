@@ -20,7 +20,21 @@
 
 import java.io.*;
 
-public class MRDepartmentsAndEmployees {
+class MROffice {
+    MRDepartment departments;
+    MREmployee employees;
+}
+
+class MRDepartmentsAndEmployees {
+    private MROffice office;
+
+    private MRDepartmentsAndEmployees() {
+        createOffice();
+    }
+
+    private void createOffice() {
+        MROffice office = new MROffice();
+    }
 
     private void printHelp() {
         System.out.println("Commands list:");
@@ -29,6 +43,7 @@ public class MRDepartmentsAndEmployees {
         System.out.println("EXIT - exit");
         System.out.println("");
     }
+
     private boolean readCommand(String strCmd) {
         strCmd = strCmd.toUpperCase();
 
