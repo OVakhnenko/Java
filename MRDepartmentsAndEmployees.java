@@ -21,41 +21,50 @@
 import java.io.*;
 
 class MROffice {
+    MROffice() {
+        MRSomething departments = new MRDepartment();
+        MRSomething employees = new MREmployee();
+    }
     MRDepartment departments;
     MREmployee employees;
 }
 
 class MRDepartmentsAndEmployees {
+    private static final String DEPARTMENT_PREFIX_CMD = "CREATE-D";
     private MROffice office;
 
-    private MRDepartmentsAndEmployees() {
-        createOffice();
-    }
-
-    private void createOffice() {
+    MRDepartmentsAndEmployees() {
         MROffice office = new MROffice();
     }
 
     private void printHelp() {
         System.out.println("Commands list:");
         System.out.println("");
-        System.out.println("HELP - help");
-        System.out.println("EXIT - exit");
+        System.out.println("create -d department_name");
         System.out.println("");
+        System.out.println("exit");
+        System.out.println("");
+    }
+
+    private String getNameFromCmd(String str, String strPrefix) {
+        return str.substring(str.indexOf(strPrefix));
     }
 
     private boolean readCommand(String strCmd) {
         strCmd = strCmd.toUpperCase();
+        strCmd = strCmd.replaceAll(" ", "");
 
         if (strCmd.equals("EXIT")) {
             System.out.println("Buy!");
             return false;
         } else if (strCmd.equals("HELP")) {
             printHelp();
-            return true;
+        } else if (strCmd.contains(DEPARTMENT_PREFIX_CMD)) { // Создание департамента
+            office.departments.createSomething(getNameFromCmd(strCmd, DEPARTMENT_PREFIX_CMD));
+        } else {
+            System.out.println("Error! Unknown command - " + strCmd);
         }
 
-        System.out.println("Error! Unknown command - " + strCmd);
         return true;
     }
 
