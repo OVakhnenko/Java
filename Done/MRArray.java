@@ -22,7 +22,7 @@ public class MRArray {
     }
 
     private void createFile() {
-        fileName = new File("").getAbsolutePath() + "\\Done.MRArray.txt";
+        fileName = new File("").getAbsolutePath() + "\\MRArray.txt";
         txt = new File(fileName);
         try {
             txt.createNewFile();

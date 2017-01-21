@@ -20,49 +20,118 @@
 
 import java.io.*;
 
-class MROffice {
-    MROffice() {
-        MRSomething departments = new MRDepartment();
-        MRSomething employees = new MREmployee();
-    }
-    MRDepartment departments;
-    MREmployee employees;
-}
-
 class MRDepartmentsAndEmployees {
-    private static final String DEPARTMENT_PREFIX_CMD = "CREATE-D";
-    private MROffice office;
+    private MRSomething departments; // chain of department
+    private MRSomething odepartment; // opened (selected) department
+    private static final String DEPARTMENT_CREATE_PREFIX_CMD = "CREATE-D";
+    private static final String DEPARTMENT_PRINT_ALL_PREFIX_CMD = "PRINT ALL-D";
+    private static final String DEPARTMENT_OPEN_PREFIX_CMD = "OPEN-D";
+    private static final String DEPARTMENT_PRINT_OPENED_PREFIX_CMD = "PRINT OPENED-D";
+    private static final String DEPARTMENT_UPDATE_PREFIX_CMD = "UPDATE-D";
 
     MRDepartmentsAndEmployees() {
-        MROffice office = new MROffice();
     }
 
     private void printHelp() {
-        System.out.println("Commands list:");
+        System.out.println("Commanrds list:");
         System.out.println("");
-        System.out.println("create -d department_name");
+        System.out.println("create department - \"create -d department_name\"");
+        System.out.println("print all departments - \"print all -d\"");
+        System.out.println("open (select) department - \"open -d department_name\"");
+        System.out.println("print opened (selected) department - \"print opened -d\"");
+        System.out.println("update department - \"update -d department_name\"");
         System.out.println("");
         System.out.println("exit");
         System.out.println("");
     }
 
     private String getNameFromCmd(String str, String strPrefix) {
-        return str.substring(str.indexOf(strPrefix));
+        return str.substring(str.indexOf(strPrefix) + strPrefix.length());
+    }
+
+    void createDepartment(String name) {
+        MRSomething tmp;
+
+        if (departments == null) {
+            tmp = (departments = new MRDepartment(name, null));
+            System.out.println("Created first " + tmp);
+        } else if ((tmp = departments.search(name)) == null) {
+            tmp = new MRDepartment(name, departments.getLast());
+            System.out.println("Created " + tmp);
+        } else {
+            System.out.println("Already exists " + tmp);
+        }
+    }
+
+    String shrink(String strCmd) {
+        strCmd = strCmd.toUpperCase();
+        strCmd = strCmd.trim();
+        //strCmd = strCmd.replaceAll(" ", "");
+
+        while (strCmd.contains("  ")) {
+            strCmd = strCmd.replace("  ", " ");
+        }
+        while (strCmd.contains(" -")) {
+            strCmd = strCmd.replace(" -", "-");
+        }
+        return strCmd;
+    }
+
+    void printAllDepartments() {
+        if (departments == null) {
+            System.out.println("Error! No departments");
+        } else {
+            departments.printAll();
+        }
+    }
+
+    void openDepartment(String name) {
+        if (departments != null) {
+            odepartment = departments.search(name);
+            System.out.println("Opened department - " + odepartment);
+        } else {
+            System.out.println("Error! No departments");
+        }
+    }
+
+    void printOpenedDepartment() {
+        if (odepartment != null) {
+            System.out.println("Opened - " + odepartment);
+        } else {
+
+            System.out.println("Error! No opened department");
+        }
+    }
+
+    void updateDepartment(String name) {
+        if (odepartment == null) {
+            System.out.println("Error! No opened department! Open it before update");
+        } else {
+            odepartment.setName(name);
+            System.out.println("Updated. Now - " + odepartment);
+        }
     }
 
     private boolean readCommand(String strCmd) {
-        strCmd = strCmd.toUpperCase();
-        strCmd = strCmd.replaceAll(" ", "");
+        strCmd = shrink(strCmd);
 
         if (strCmd.equals("EXIT")) {
             System.out.println("Buy!");
             return false;
         } else if (strCmd.equals("HELP")) {
             printHelp();
-        } else if (strCmd.contains(DEPARTMENT_PREFIX_CMD)) { // Создание департамента
-            office.departments.createSomething(getNameFromCmd(strCmd, DEPARTMENT_PREFIX_CMD));
+        } else if (strCmd.contains(DEPARTMENT_CREATE_PREFIX_CMD)) {
+            createDepartment(getNameFromCmd(strCmd, DEPARTMENT_CREATE_PREFIX_CMD));
+        } else if (strCmd.contains(DEPARTMENT_PRINT_ALL_PREFIX_CMD)) {
+            printAllDepartments();
+        } else if (strCmd.contains(DEPARTMENT_OPEN_PREFIX_CMD)) {
+            openDepartment(getNameFromCmd(strCmd, DEPARTMENT_CREATE_PREFIX_CMD));
+        } else if (strCmd.contains(DEPARTMENT_PRINT_OPENED_PREFIX_CMD)) {
+            printOpenedDepartment();
+        } else if (strCmd.contains(DEPARTMENT_UPDATE_PREFIX_CMD)) {
+            updateDepartment(getNameFromCmd(strCmd, DEPARTMENT_UPDATE_PREFIX_CMD));
         } else {
-            System.out.println("Error! Unknown command - " + strCmd);
+            System.out.println("Error! Unknown command - \"" + strCmd + "\"");
         }
 
         return true;
