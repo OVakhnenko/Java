@@ -1,3 +1,6 @@
+import java.io.FileWriter;
+import java.io.IOException;
+
 /**
  * needed for MRDepartmentsAndEmployees
  */
@@ -15,7 +18,7 @@ class MRSomething {
         }
     }
 
-    private boolean hasPrev() {
+    boolean hasPrev() {
         return prev != null;
     }
 
@@ -28,16 +31,16 @@ class MRSomething {
         return tmp;
     }
 
-    private boolean hasNext() {
+    boolean hasNext() {
         return next != null;
     }
 
-    private MRSomething getNext() {
+    MRSomething getNext() {
         return next;
     }
 
-    private MRSomething getPrev() {
-        return next;
+    MRSomething getPrev() {
+        return prev;
     }
 
     MRSomething getLast() {
@@ -53,11 +56,11 @@ class MRSomething {
         return next == null;
     }
 
-    private void setNext(MRSomething tmp) {
+    void setNext(MRSomething tmp) {
         next = tmp;
     }
 
-    private void setPrev(MRSomething tmp) {
+    void setPrev(MRSomething tmp) {
         prev = tmp;
     }
 
@@ -96,4 +99,24 @@ class MRSomething {
 
         } while (!(tmp == null));
     }
+
+    boolean save(FileWriter writer, String prefix) throws IOException {
+        return false;
+    }
+
+    boolean saveAll(FileWriter writer, String prefix) throws IOException {
+        MRSomething tmp = getFirst();
+
+        do {
+            if (!tmp.save(writer, prefix)) {
+                return false;
+            }
+
+            tmp = tmp.getNext();
+
+        } while (!(tmp == null));
+
+        return true;
+    }
+
 }

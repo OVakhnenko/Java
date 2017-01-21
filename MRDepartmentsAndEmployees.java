@@ -21,13 +21,18 @@
 import java.io.*;
 
 class MRDepartmentsAndEmployees {
+    private String fileName = new File("").getAbsolutePath() + "\\MRDepartmentsAndEmployees.txt";
     private MRSomething departments; // chain of department
     private MRSomething odepartment; // opened (selected) department
     private static final String DEPARTMENT_CREATE_PREFIX_CMD = "CREATE-D";
     private static final String DEPARTMENT_PRINT_ALL_PREFIX_CMD = "PRINT ALL-D";
+    private static final String DEPARTMENT_PRINT_ALL2_PREFIX_CMD = "DEPARTMENTS";
     private static final String DEPARTMENT_OPEN_PREFIX_CMD = "OPEN-D";
     private static final String DEPARTMENT_PRINT_OPENED_PREFIX_CMD = "PRINT OPENED-D";
     private static final String DEPARTMENT_UPDATE_PREFIX_CMD = "UPDATE-D";
+    private static final String DEPARTMENT_REMOVE_PREFIX_CMD = "RM-D";
+    private static final String DEPARTMENT_SAVE_PREFIX_CMD = "SAVE";
+    private static final String DEPARTMENT_READ_PREFIX_CMD = "READ";
 
     MRDepartmentsAndEmployees() {
     }
@@ -36,10 +41,13 @@ class MRDepartmentsAndEmployees {
         System.out.println("Commanrds list:");
         System.out.println("");
         System.out.println("create department - \"create -d department_name\"");
-        System.out.println("print all departments - \"print all -d\"");
+        System.out.println("print all departments - \"print all -d\" or \"departments\"");
         System.out.println("open (select) department - \"open -d department_name\"");
         System.out.println("print opened (selected) department - \"print opened -d\"");
         System.out.println("update department - \"update -d department_name\"");
+        System.out.println("remove department - \"rm -d department_name\"");
+        System.out.println("");
+        System.out.println("save date - \"save\"");
         System.out.println("");
         System.out.println("exit");
         System.out.println("");
@@ -112,6 +120,57 @@ class MRDepartmentsAndEmployees {
         }
     }
 
+    void removeDepartment(String name) {
+        if (departments != null) {
+            MRSomething tmp = departments.search(name);
+            if (tmp != null) {
+                MRSomething prev = tmp.getPrev();
+                MRSomething next = tmp.getNext();
+
+                if (prev != null) {
+                    prev.setNext(next);
+                } else {
+                    departments = next;
+                }
+                if (next != null) {
+                    next.setPrev(prev);
+                }
+                tmp.setPrev(null);
+                tmp.setNext(null);
+                System.out.println("Department " + tmp + " removed");
+            } else {
+                System.out.println("Error! Not found department " + name);
+            }
+        } else {
+            System.out.println("Error! No departments");
+        }
+    }
+
+    void saveAll() {
+        if (departments == null) {
+            System.out.println("Error! No departments");
+        } else {
+            try (FileWriter writer = new FileWriter(fileName, false)) {
+                if (departments.saveAll(writer, DEPARTMENT_CREATE_PREFIX_CMD)) {
+                    System.out.println("All data saved successfully");
+                }
+            } catch (IOException e) {
+                System.out.println("Write error!");
+            }
+        }
+    }
+
+    void readAll() {
+        if (departments != null) {
+            System.out.println("Error! Departments are exists");
+            return;
+        }
+        createDepartment("reader");
+        //departments.readAll();
+        removeDepartment("reader");
+        printAllDepartments();
+    }
+
     private boolean readCommand(String strCmd) {
         strCmd = shrink(strCmd);
 
@@ -124,12 +183,20 @@ class MRDepartmentsAndEmployees {
             createDepartment(getNameFromCmd(strCmd, DEPARTMENT_CREATE_PREFIX_CMD));
         } else if (strCmd.contains(DEPARTMENT_PRINT_ALL_PREFIX_CMD)) {
             printAllDepartments();
+        } else if (strCmd.contains(DEPARTMENT_PRINT_ALL2_PREFIX_CMD)) {
+            printAllDepartments();
         } else if (strCmd.contains(DEPARTMENT_OPEN_PREFIX_CMD)) {
             openDepartment(getNameFromCmd(strCmd, DEPARTMENT_CREATE_PREFIX_CMD));
         } else if (strCmd.contains(DEPARTMENT_PRINT_OPENED_PREFIX_CMD)) {
             printOpenedDepartment();
         } else if (strCmd.contains(DEPARTMENT_UPDATE_PREFIX_CMD)) {
             updateDepartment(getNameFromCmd(strCmd, DEPARTMENT_UPDATE_PREFIX_CMD));
+        } else if (strCmd.contains(DEPARTMENT_REMOVE_PREFIX_CMD)) {
+            removeDepartment(getNameFromCmd(strCmd, DEPARTMENT_REMOVE_PREFIX_CMD));
+        } else if (strCmd.contains(DEPARTMENT_SAVE_PREFIX_CMD)) {
+            saveAll();
+        } else if (strCmd.contains(DEPARTMENT_READ_PREFIX_CMD)) {
+            readAll();
         } else {
             System.out.println("Error! Unknown command - \"" + strCmd + "\"");
         }
