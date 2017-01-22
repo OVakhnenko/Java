@@ -8,6 +8,7 @@ class MRSomething {
     private String name;
     private MRSomething next;
     private MRSomething prev;
+    MRSomething composition;
 
     MRSomething(String name, MRSomething something) {
         this.name = name.trim();
@@ -22,7 +23,7 @@ class MRSomething {
         return prev != null;
     }
 
-    private MRSomething getFirst() {
+    MRSomething getFirst() {
         MRSomething tmp = this;
 
         while (tmp.hasPrev()) {

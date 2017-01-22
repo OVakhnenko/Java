@@ -19,11 +19,13 @@
 //
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 
 class MRDepartmentsAndEmployees {
     private String fileName = new File("").getAbsolutePath() + "\\MRDepartmentsAndEmployees.txt";
     private MRSomething departments; // chain of department
     private MRSomething odepartment; // opened (selected) department
+
     private static final String DEPARTMENT_CREATE_PREFIX_CMD = "CREATE-D";
     private static final String DEPARTMENT_PRINT_ALL_PREFIX_CMD = "PRINT ALL-D";
     private static final String DEPARTMENT_PRINT_ALL2_PREFIX_CMD = "DEPARTMENTS";
@@ -34,11 +36,13 @@ class MRDepartmentsAndEmployees {
     private static final String DEPARTMENT_SAVE_PREFIX_CMD = "SAVE";
     private static final String DEPARTMENT_READ_PREFIX_CMD = "READ";
 
+    private static final String EMPLOYEE_CREATE_PREFIX_CMD = "";
+
     MRDepartmentsAndEmployees() {
     }
 
     private void printHelp() {
-        System.out.println("Commanrds list:");
+        System.out.println("commanrds list:");
         System.out.println("");
         System.out.println("create department - \"create -d department_name\"");
         System.out.println("print all departments - \"print all -d\" or \"departments\"");
@@ -48,6 +52,7 @@ class MRDepartmentsAndEmployees {
         System.out.println("remove department - \"rm -d department_name\"");
         System.out.println("");
         System.out.println("save date - \"save\"");
+        System.out.println("read date - \"read\"");
         System.out.println("");
         System.out.println("exit");
         System.out.println("");
@@ -147,12 +152,34 @@ class MRDepartmentsAndEmployees {
     }
 
     void saveAll() {
+        boolean saved;
+
         if (departments == null) {
             System.out.println("Error! No departments");
         } else {
             try (FileWriter writer = new FileWriter(fileName, false)) {
-                if (departments.saveAll(writer, DEPARTMENT_CREATE_PREFIX_CMD)) {
+                MRSomething tmp = departments.getFirst();
+
+                do {
+                    saved = tmp.save(writer, DEPARTMENT_CREATE_PREFIX_CMD);
+                    if (!saved) {
+                        break;
+                    }
+                    if (tmp.composition != null) {
+                        saved = tmp.composition.saveAll(writer, EMPLOYEE_CREATE_PREFIX_CMD);
+                        if (!saved) {
+                            break;
+                        }
+                    }
+                    tmp = tmp.getNext();
+
+                } while (!(tmp == null));
+                writer.close();
+
+                if (saved) {
                     System.out.println("All data saved successfully");
+                } else {
+                    System.out.println("Write error!");
                 }
             } catch (IOException e) {
                 System.out.println("Write error!");
@@ -163,12 +190,18 @@ class MRDepartmentsAndEmployees {
     void readAll() {
         if (departments != null) {
             System.out.println("Error! Departments are exists");
-            return;
+        } else {
+            try (BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(
+                            new FileInputStream(fileName), StandardCharsets.UTF_8))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    readCommand(line);
+                }
+            } catch (IOException e) {
+                System.out.println("Read error!");
+            }
         }
-        createDepartment("reader");
-        //departments.readAll();
-        removeDepartment("reader");
-        printAllDepartments();
     }
 
     private boolean readCommand(String strCmd) {
