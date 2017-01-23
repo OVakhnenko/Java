@@ -1,4 +1,4 @@
-package Done;// Write a console application that takes a string and returns the number
+package done;// Write a console application that takes a string and returns the number
 // of unique characters in the string. It is expected that a string with
 // the same character sequence may be passed several times to the method.
 // Since the counting operation can be time consuming, the method should

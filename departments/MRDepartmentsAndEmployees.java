@@ -1,3 +1,5 @@
+package departments;
+
 //
 // Departments and Employees
 //
@@ -18,12 +20,15 @@
 // 2.	Third party libraries aren’t allowed
 //
 
+import departments.MRDepartment;
+import departments.MRSomething;
+
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 
 class MRDepartmentsAndEmployees {
     private String fileName = new File("").getAbsolutePath() + "\\MRDepartmentsAndEmployees.txt";
-    private MRSomething departments; // chain of department
+    private MRSomething departments; // chain of departments
     private MRSomething odepartment; // opened (selected) department
 
     private static final String DEPARTMENT_CREATE_PREFIX_CMD = "CREATE-D";

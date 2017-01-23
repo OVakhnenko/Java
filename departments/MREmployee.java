@@ -1,3 +1,5 @@
+package departments;
+
 /**
  * needed for MRDepartmentsAndEmployees
  */

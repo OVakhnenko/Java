@@ -1,4 +1,4 @@
-package Done;
+package done;
 
 public class MRHashCode {
     public static void main(String[] args) {
