@@ -1,4 +1,4 @@
 package com.vakhnenko.departments;
 
-public class Application {
+class Application {
 }
