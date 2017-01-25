@@ -1,0 +1,78 @@
+public abstract class Employee{
+    protected in ID;
+    protected int age;
+    protected String name;
+    protected String type;
+    //other common fields
+
+    public Employee(String name, String type, int age){
+        this.name = name;
+        this.type = type;
+        this.age = age;
+        this.ID = //generate unique ID
+    }
+
+    //getters/setters here
+}
+
+public class Developer extends Employee {
+    private String language;
+    public Developer(String name, String langugage, int age){
+        super(name, Constants.DEVELOPER_TYPE, age)
+        this.language = language;
+    }
+
+    //getters setters here
+}
+
+//the class Manager looks the same except his own field 'methodology'
+
+public class EmployeeDAO {
+    private List<Employee> employees = new ArrayList<>();
+
+    void save (Employee e){
+        //here you save your employee into file and some colection of employees that u use in runtime
+        // this collection could be stored here for instance;
+        //so it could be like writer.write( e) --> to file
+        // and employees.add( e )--> to collection
+        //so u could use it collection in runtime to show all employees in the terminal
+    }
+
+    void update(Employee e){
+        //here the solution to update is up to you. You should find proper and perfomance one to update current collection with new employee
+        // For example first that came into my mind it :find this employee by ID in you collection, compare and update it for new fields and save into file
+        //but it could be improved
+    }
+
+    void delete(int ID){
+        //delete from collection and the file
+    }
+
+    Employee get(int ID){
+        //load it by ID from collection
+    }
+
+    Employee getByName(String name){
+        //find in collection by name
+    }
+
+    List<Employee> getAll(){
+        return Collections.unmodifiableList(employees); // to insure that list will be only readed but not changed
+    }
+}
+
+
+//the DepartmentDAO looks the same
+
+//usage (pseudocode):
+// readCommandsFromTerminal()
+// switch(Command)
+
+// case "create employe -t m":
+// Employee e = new Manager(name, methodology, age);
+// employeeDAO.save( e )
+
+// case "update employee"
+// Employee updatedEmployee = new Developer/Manager(arguments from command line)
+// updatedEmployee.setID(id)
+// employeeDAO.update(updatedEmployee) //here you find
