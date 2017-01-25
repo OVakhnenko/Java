@@ -29,7 +29,7 @@ public class FibonacciExpression {
 
     public static int a(int x) {
         //System.out.print("(");
-        System.out.print(x);
+        //System.out.print(x);
         if (x == 2)
             System.out.print("(");
         else if (!(x % 2 == 0)) {
