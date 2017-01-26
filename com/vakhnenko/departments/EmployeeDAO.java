@@ -6,11 +6,11 @@ public class EmployeeDAO extends EntityDAO {
         employeeStatus = "Employee";
     }
 
-    void create(String name, String type, int age, String lenguage, String metodology) {
+    void create(String name, String type, int age, String lenguage, String metodology, String department) {
         if (search(name) != null) {
             System.out.println(employeeStatus + " \"" + name + "\" already exists");
         } else {
-            employees.add(new Employee(name, type, age));
+            employees.add(new Employee(name, type, age, department));
         }
     }
 }

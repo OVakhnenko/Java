@@ -39,8 +39,8 @@ public class Application {
         readCommand("rm -d 111 1111 11111");
         System.out.println("");
         readCommand("departments");*/
-        readCommand("create -e -n Ivan Ivanovich -t m -a 22 -m Scrum");
-        readCommand("create -e -n Ivan Ivanovich -t m -a 22 -m Scrum");
+        readCommand("create -e -n Ivan Ivanovich -t m -a 22 -m Scrum -dn 222 2222 22222");
+        readCommand("create -e -n Ivan Ivanovich -t m -a 22 -m Scrum -dn 222 2222 22222-");
     }
 
     private boolean readCommand(String command) {
@@ -94,20 +94,40 @@ public class Application {
     }
 
     private void createEmployee(String[] commands) {
-        int positionOfKey = searchKeyInArray(commands, NAME_EMPLOYEE_KEY);
-        String name = getStringFromManyWords(commands, positionOfKey);
-        int age = Integer.valueOf(getKeyFromArray(commands, AGE_EMPLOYEE_KEY));
-        String type = getKeyFromArray(commands, TYPE_EMPLOYEE_KEY);
-        String lenguage = getKeyFromArray(commands, LENGUAGE_EMPLOYEE_KEY);
-        String metodology = getKeyFromArray(commands, METHODOLOGY_EMPLOYEE_KEY);
+        int positionOfKey;
 
-        if (!name.equals("")) {
-            employeeDAO.create(name, type, age, lenguage, metodology);
-            //printAllDepartments();
-        } else {
-            System.out.println("Error! Name is empty");
+        positionOfKey = searchKeyInArray(commands, DEPARTMENT_EMPLOYEE_KEY);
+        String department = getStringFromManyWords(commands, positionOfKey);
+
+        if (department.equals("")) {
+            System.out.println("Error! Department is empty");
+            return;
         }
 
+        positionOfKey = searchKeyInArray(commands, NAME_EMPLOYEE_KEY);
+        String name = getStringFromManyWords(commands, positionOfKey);
+
+        if (name.equals("")) {
+            System.out.println("Error! Name is empty");
+            return;
+        }
+
+        String type = getKeyFromArray(commands, TYPE_EMPLOYEE_KEY);
+        String lenguage = getKeyFromArray(commands, LENGUAGE_EMPLOYEE_KEY);
+        String methodology = getKeyFromArray(commands, METHODOLOGY_EMPLOYEE_KEY);
+
+        if (type.equals(EMPLOYEE_MANAGER_TYPE) && (!(lenguage.equals("")))) {
+            System.out.println("Error! The manager doesn’t have lenguage field");
+            return;
+        } else if (type.equals(EMPLOYEE_DEVELOPER_TYPE) && (!(methodology.equals("")))) {
+            System.out.println("Error! The developer doesn’t have methodology field");
+            return;
+        }
+
+        int age = Integer.valueOf(getKeyFromArray(commands, AGE_EMPLOYEE_KEY));
+
+        employeeDAO.create(name, type, age, lenguage, methodology, department);
+        //printAllDepartments();
     }
 
     private void remove(String[] commands) {
