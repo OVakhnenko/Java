@@ -5,7 +5,7 @@ public abstract class Entity {
     protected String name;
     private static int uniqueID;
 
-    protected Entity(String name) {//, String type, int age) {
+    protected Entity(String name) {
         this.name = name;
         this.ID = uniqueID++;
     }
