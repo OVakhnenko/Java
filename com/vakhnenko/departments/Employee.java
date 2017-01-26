@@ -1,31 +1,13 @@
 package com.vakhnenko.departments;
 
-import java.util.UUID;
-
-public abstract class Employee {
-    protected int ID;
+public class Employee extends Entity {
     protected int age;
-    protected String name;
     protected String type;
-    private static int uniqueID;
 
-    public Employee(String name, String type, int age) {
-        this.name = name;
-        this.type = type;
+    protected Employee(String name, String type, int age) {
+        super(name);
         this.age = age;
-        this.ID = uniqueID++;
-    }
-
-    protected int getID() {
-        return ID;
-    }
-
-    protected void setName(String name) {
-        this.name = name;
-    }
-
-    protected String getName() {
-        return name;
+        this.type = type;
     }
 
     protected void setAge(int age) {
