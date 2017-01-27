@@ -5,11 +5,11 @@ import java.util.Collections;
 import java.util.List;
 
 abstract class EntityDAO {
-    protected String employeeStatus = "";
     protected List<Entity> employees = new ArrayList<>();
+    private String employeeStatus = "";
 
-    List<Entity> getAll() {
-        return Collections.unmodifiableList(employees);
+    void add(Entity entiny) {
+        employees.add(entiny);
     }
 
     void delete(String name) {
@@ -18,6 +18,7 @@ abstract class EntityDAO {
         if ((tmp = search(name)) == null) {
             System.out.println(employeeStatus + " \"" + name + "\" not found!");
         } else {
+            System.out.println(employeeStatus + " \"" + name + "\" removed.");
             employees.remove(tmp);
         }
     }
@@ -51,6 +52,22 @@ abstract class EntityDAO {
 
     private void print(Entity employee) {
         System.out.println(employeeStatus + " name \"" + employee.getName() + "\"");
+    }
+
+    void setEmployeeStatus(String employeeStatus) {
+        this.employeeStatus = employeeStatus;
+    }
+
+    String getEmployeeStatus() {
+        return employeeStatus;
+    }
+
+    int getSize() {
+        return employees.size();
+    }
+
+    List<Entity> getAll() {
+        return Collections.unmodifiableList(employees);
     }
 }
 

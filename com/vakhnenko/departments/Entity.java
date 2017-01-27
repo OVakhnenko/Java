@@ -1,8 +1,8 @@
 package com.vakhnenko.departments;
 
-public abstract class Entity {
-    protected int ID;
-    protected String name;
+abstract class Entity {
+    private int ID;
+    private String name;
     private static int uniqueID;
 
     protected Entity(String name) {
