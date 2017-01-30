@@ -26,8 +26,9 @@ public class JDBCStatementCreateExample {
         Connection dbConnection = null;
         Statement statement = null;
 
+        String showTableSQL = "SHOW TABLES FROM TEST";
         String dropTableSQL = "DROP TABLE TEST";
-        String createTableSQL = "CREATE TABLE TEST ("
+        String createTableSQL = "CREATE TABLE IF NOT EXISTS TEST ("
                 + "id int(11) NOT NULL, "
                 + "name varchar(50) NOT NULL, "
                 + "author varchar(50) NOT NULL, "
@@ -41,8 +42,10 @@ public class JDBCStatementCreateExample {
             dbConnection = getDBConnection();
             statement = dbConnection.createStatement();
 
+            /*System.out.println(statement.execute(showTableSQL));
             System.out.println(dropTableSQL);
             statement.execute(dropTableSQL);
+            System.out.println(statement.execute(showTableSQL));*/
 
             System.out.println(createTableSQL);
             statement.execute(createTableSQL);
