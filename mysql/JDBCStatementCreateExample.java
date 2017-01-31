@@ -1,9 +1,6 @@
 package mysql;
 
-import java.sql.DriverManager;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class JDBCStatementCreateExample {
 
@@ -42,10 +39,8 @@ public class JDBCStatementCreateExample {
             dbConnection = getDBConnection();
             statement = dbConnection.createStatement();
 
-            /*System.out.println(statement.execute(showTableSQL));
             System.out.println(dropTableSQL);
             statement.execute(dropTableSQL);
-            System.out.println(statement.execute(showTableSQL));*/
 
             System.out.println(createTableSQL);
             statement.execute(createTableSQL);
@@ -57,6 +52,15 @@ public class JDBCStatementCreateExample {
 
             System.out.println("Table \"TEST\" is created!");
 
+            String query = "select name from test where name='Effective Java'";
+
+            ResultSet rs = statement.executeQuery(query);
+
+            while (rs.next()) {
+                //int id = rs.getInt(1);
+                String name = rs.getString(1);
+                System.out.println("name: " + name);
+            }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         } finally {
