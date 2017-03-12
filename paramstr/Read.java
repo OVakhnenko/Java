@@ -8,8 +8,13 @@ import java.util.Properties;
 public class Read {
     public static void main(String[] args) throws IOException {
         Properties p = new Properties();
+
         p.load(new FileInputStream("paramstr.ini"));
+        System.out.println(p);
         System.out.println(p.get("user"));
         System.out.println(p.get("password"));
+
+        //p.loadFromXML(new FileInputStream("paramstr.xml"));
+        //System.out.println(p);
     }
 }
